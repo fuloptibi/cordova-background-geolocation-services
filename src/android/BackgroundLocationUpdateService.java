@@ -20,6 +20,7 @@ import android.telephony.CellLocation;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.app.Activity;
@@ -106,6 +107,7 @@ public class BackgroundLocationUpdateService
     private String notificationTitle = "Background checking";
     private String notificationText = "ENABLED";
     private Boolean useActivityDetection = false;
+    private String notificationChannelId = "background_tracking_notification_channel";
 
     private Boolean stopOnTerminate;
     private Boolean isRequestingActivity = false;
@@ -187,7 +189,20 @@ public class BackgroundLocationUpdateService
 
             Context context = getApplicationContext();
 
-            Notification.Builder builder = new Notification.Builder(this);
+            Notification.Builder builder;
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+              try {
+                NotificationChannel channel = new NotificationChannel(notificationChannelId, notificationTitle, NotificationManager.IMPORTANCE_DEFAULT);
+                channel.setDescription(notificationText);
+                notificationManager.createNotificationChannel(channel);
+              } catch (Exception ex) {
+              }
+              builder = new Notification.Builder(this, notificationChannelId);
+            } else {
+              builder = new Notification.Builder(this);
+            }
+
             builder.setContentTitle(notificationTitle);
             builder.setContentText(notificationText);
             builder.setSmallIcon(context.getApplicationInfo().icon);
