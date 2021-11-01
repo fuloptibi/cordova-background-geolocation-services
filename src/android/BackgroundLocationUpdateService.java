@@ -308,6 +308,83 @@ public class BackgroundLocationUpdateService
      * Broadcast receiver for receiving a single-update from LocationManager.
      */
     private BroadcastReceiver locationUpdateReceiver = new BroadcastReceiver() {
+
+      private static LocationListener locationListener = new LocationListener() {
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras){
+            try {
+                String strStatus = "";
+                switch (status) {
+                case GpsStatus.GPS_EVENT_FIRST_FIX:
+                    strStatus = "GPS_EVENT_FIRST_FIX";
+                    break;
+                case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
+                    strStatus = "GPS_EVENT_SATELLITE_STATUS";
+                    break;
+                case GpsStatus.GPS_EVENT_STARTED:
+                    strStatus = "GPS_EVENT_STARTED";
+                    break;
+                case GpsStatus.GPS_EVENT_STOPPED:
+                    strStatus = "GPS_EVENT_STOPPED";
+                    break;
+                default:
+                    strStatus = String.valueOf(status);
+                    break;
+                }
+                Log.w(TAG, "Status: " + strStatus);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {}
+
+        @Override
+        public void onProviderDisabled(String provider) {}
+
+        @Override
+        public void onLocationChanged(Location location) {
+            try {
+                Log.w(TAG, "***new location***");
+                gotLocation(location);
+            } catch (Exception e) {
+            }
+        }
+      };
+
+      @Override
+      public void onReceive(final Context context, Intent intent) {
+        String provider = LocationManager.GPS_PROVIDER;
+
+        Log.w(TAG, "new request received by receiver");
+        LocationManager locationManager = (LocationManager) context
+                .getSystemService(Context.LOCATION_SERVICE);
+        if (locationManager.isProviderEnabled(provider)) {
+            locationManager.requestLocationUpdates(provider,
+                    /* MIN_TIME_REQUEST */ 5*1000, 5, locationListener);
+            Location gotLoc = locationManager.getLastKnownLocation(provider);
+            gotLocation(gotLoc);
+        } else {
+            Log.w(TAG, "please turn on GPS");
+            /*
+            Intent settinsIntent = new Intent(
+                    android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            settinsIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            _context.startActivity(settinsIntent);
+            */
+        }
+      }
+
+      private static void gotLocation(Location location) {
+        Log.w(TAG, "new location saved", location.toString());
+
+        Intent mIntent = new Intent(Constants.CALLBACK_LOCATION_UPDATE);
+        mIntent.putExtras(createLocationBundle(location));
+        getApplicationContext().sendBroadcast(mIntent);
+      }
+
+        /*
         @Override
         public void onReceive(Context context, Intent intent) {
             String key = FusedLocationProviderApi.KEY_LOCATION_CHANGED;
@@ -337,7 +414,7 @@ public class BackgroundLocationUpdateService
                     getApplicationContext().sendBroadcast(mIntent);
                 }
             }
-        }
+        }*/
     };
 
     private void showDebugToast(Context ctx, String msg) {
