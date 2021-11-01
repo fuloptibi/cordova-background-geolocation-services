@@ -72,14 +72,14 @@ public class BackgroundLocationServicesPlugin extends CordovaPlugin {
     private JSONArray fences = null;
 
     private CallbackContext locationUpdateCallback = null;
-    private CallbackContext detectedActivitiesCallback = null;
+    //private CallbackContext detectedActivitiesCallback = null;
     private CallbackContext startCallback = null;
 
     private BroadcastReceiver receiver = null;
 
     public static final int START_REQ_CODE = 0;
     public static final int PERMISSION_DENIED_ERROR = 20;
-    protected final static String[] permissions = { Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACTIVITY_RECOGNITION };
+    protected final static String[] permissions = { Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION };
 
     // Used to (un)bind the service to with the activity
     private final ServiceConnection serviceConnection = new ServiceConnection() {
@@ -96,7 +96,7 @@ public class BackgroundLocationServicesPlugin extends CordovaPlugin {
       }
     };
 
-    private BroadcastReceiver detectedActivitiesReceiver = new BroadcastReceiver() {
+    /*private BroadcastReceiver detectedActivitiesReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, final Intent intent) {
 
@@ -124,7 +124,7 @@ public class BackgroundLocationServicesPlugin extends CordovaPlugin {
               }
           });
       }
-    };
+    };*/
 
     private BroadcastReceiver locationUpdateReceiver = new BroadcastReceiver() {
         @Override
@@ -182,7 +182,7 @@ public class BackgroundLocationServicesPlugin extends CordovaPlugin {
       APP_NAME = getApplicationName(activity);
       //Need To namespace these in case more than one app is running this bg plugin
       Constants.LOCATION_UPDATE = APP_NAME + Constants.LOCATION_UPDATE;
-      Constants.DETECTED_ACTIVITY_UPDATE = APP_NAME + Constants.DETECTED_ACTIVITY_UPDATE;
+      //Constants.DETECTED_ACTIVITY_UPDATE = APP_NAME + Constants.DETECTED_ACTIVITY_UPDATE;
     }
 
     public boolean execute(String action, JSONArray data, CallbackContext callbackContext) {
@@ -204,8 +204,8 @@ public class BackgroundLocationServicesPlugin extends CordovaPlugin {
               updateServiceIntent.putExtra("interval", interval);
               updateServiceIntent.putExtra("fastestInterval", fastestInterval);
               //updateServiceIntent.putExtra("aggressiveInterval", aggressiveInterval);
-              updateServiceIntent.putExtra("activitiesInterval", activitiesInterval);
-              updateServiceIntent.putExtra("useActivityDetection", useActivityDetection);
+              //updateServiceIntent.putExtra("activitiesInterval", activitiesInterval);
+              //updateServiceIntent.putExtra("useActivityDetection", useActivityDetection);
 
             if (hasPermisssion()) {
                 isServiceBound = bindServiceToWebview(activity, updateServiceIntent);
@@ -243,8 +243,8 @@ public class BackgroundLocationServicesPlugin extends CordovaPlugin {
                 this.notificationTitle = data.getString(6);
                 this.notificationText = data.getString(7);
                 //this.activityType = data.getString(8);
-                this.useActivityDetection = data.getString(9);
-                this.activitiesInterval = data.getString(10);
+                //this.useActivityDetection = data.getString(9);
+                //this.activitiesInterval = data.getString(10);
 
 
 
@@ -263,10 +263,10 @@ public class BackgroundLocationServicesPlugin extends CordovaPlugin {
             result = true;
             //Register the function for repeated location update
             locationUpdateCallback = callbackContext;
-        } else if(ACTION_REGISTER_FOR_ACTIVITY_UPDATES.equalsIgnoreCase(action)) {
+        } /*else if(ACTION_REGISTER_FOR_ACTIVITY_UPDATES.equalsIgnoreCase(action)) {
           result = true;
           detectedActivitiesCallback = callbackContext;
-        } /* else if(ACTION_AGGRESSIVE_TRACKING.equalsIgnoreCase(action)) {
+        }*/ /* else if(ACTION_AGGRESSIVE_TRACKING.equalsIgnoreCase(action)) {
             result = true;
             if(isEnabled) {
                 this.cordova.getActivity().sendBroadcast(new Intent(Constants.CHANGE_AGGRESSIVE));
@@ -299,7 +299,7 @@ public class BackgroundLocationServicesPlugin extends CordovaPlugin {
         context.startService(intent);
 
         webView.getContext().registerReceiver(locationUpdateReceiver, new IntentFilter(Constants.CALLBACK_LOCATION_UPDATE));
-        webView.getContext().registerReceiver(detectedActivitiesReceiver, new IntentFilter(Constants.CALLBACK_ACTIVITY_UPDATE));
+        //webView.getContext().registerReceiver(detectedActivitiesReceiver, new IntentFilter(Constants.CALLBACK_ACTIVITY_UPDATE));
 
         didBind = true;
       } catch(Exception e) {
@@ -317,7 +317,7 @@ public class BackgroundLocationServicesPlugin extends CordovaPlugin {
         context.stopService(intent);
 
         webView.getContext().unregisterReceiver(locationUpdateReceiver);
-        webView.getContext().unregisterReceiver(detectedActivitiesReceiver);
+        //webView.getContext().unregisterReceiver(detectedActivitiesReceiver);
 
         didUnbind = true;
       } catch(Exception e) {

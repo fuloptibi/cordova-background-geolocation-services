@@ -82,14 +82,14 @@ public class BackgroundLocationUpdateService
     private static final String TAG = "BackgroundLocationUpdateService";
 
     private Location lastLocation;
-    private DetectedActivity lastActivity;
+    //private DetectedActivity lastActivity;
     private long lastUpdateTime = 0l;
     private Boolean fastestSpeed = false;
 
     private PendingIntent locationUpdatePI;
     private GoogleApiClient locationClientAPI;
-    private PendingIntent detectedActivitiesPI;
-    private GoogleApiClient detectedActivitiesAPI;
+    //private PendingIntent detectedActivitiesPI;
+    //private GoogleApiClient detectedActivitiesAPI;
 
     private Integer desiredAccuracy = 100;
     private Integer distanceFilter  = 30;
@@ -145,9 +145,9 @@ public class BackgroundLocationUpdateService
         locationUpdatePI = PendingIntent.getBroadcast(this, 9001, locationUpdateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         registerReceiver(locationUpdateReceiver, new IntentFilter(Constants.LOCATION_UPDATE));
 
-        Intent detectedActivitiesIntent = new Intent(Constants.DETECTED_ACTIVITY_UPDATE);
-        detectedActivitiesPI = PendingIntent.getBroadcast(this, 9002, detectedActivitiesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        registerReceiver(detectedActivitiesReceiver, new IntentFilter(Constants.DETECTED_ACTIVITY_UPDATE));
+        //Intent detectedActivitiesIntent = new Intent(Constants.DETECTED_ACTIVITY_UPDATE);
+        //detectedActivitiesPI = PendingIntent.getBroadcast(this, 9002, detectedActivitiesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        //registerReceiver(detectedActivitiesReceiver, new IntentFilter(Constants.DETECTED_ACTIVITY_UPDATE));
 
         // Receivers for start/stop recording
         registerReceiver(startRecordingReceiver, new IntentFilter(Constants.START_RECORDING));
@@ -173,13 +173,13 @@ public class BackgroundLocationUpdateService
             interval             = Integer.parseInt(intent.getStringExtra("interval"));
             fastestInterval      = Integer.parseInt(intent.getStringExtra("fastestInterval"));
             //aggressiveInterval   = Integer.parseInt(intent.getStringExtra("aggressiveInterval"));
-            activitiesInterval   = Integer.parseInt(intent.getStringExtra("activitiesInterval"));
+            //activitiesInterval   = Integer.parseInt(intent.getStringExtra("activitiesInterval"));
 
             isDebugging = Boolean.parseBoolean(intent.getStringExtra("isDebugging"));
             notificationTitle = intent.getStringExtra("notificationTitle");
             notificationText = intent.getStringExtra("notificationText");
 
-            useActivityDetection = Boolean.parseBoolean(intent.getStringExtra("useActivityDetection"));
+            //useActivityDetection = Boolean.parseBoolean(intent.getStringExtra("useActivityDetection"));
 
 
             // Build the notification / pending intent
@@ -259,8 +259,8 @@ public class BackgroundLocationUpdateService
         Log.i(TAG, "- isDebugging: "        + isDebugging);
         Log.i(TAG, "- notificationTitle: "  + notificationTitle);
         Log.i(TAG, "- notificationText: "   + notificationText);
-        Log.i(TAG, "- useActivityDetection: "   + useActivityDetection);
-        Log.i(TAG, "- activityDetectionInterval: "   + activitiesInterval);
+        //Log.i(TAG, "- useActivityDetection: "   + useActivityDetection);
+        //Log.i(TAG, "- activityDetectionInterval: "   + activitiesInterval);
 
         //We want this service to continue running until it is explicitly stopped
         return START_REDELIVER_INTENT;
@@ -281,10 +281,10 @@ public class BackgroundLocationUpdateService
                Log.d(TAG, "- Start Recording Receiver");
             }
 
-            if(useActivityDetection) {
+            /*if(useActivityDetection) {
               Log.d(TAG, "STARTING ACTIVITY DETECTION");
               startDetectingActivities();
-            }
+            }*/
 
             startRecording();
         }
@@ -296,9 +296,9 @@ public class BackgroundLocationUpdateService
             if(isDebugging) {
                 Log.d(TAG, "- Stop Recording Receiver");
             }
-            if(useActivityDetection) {
+            /*if(useActivityDetection) {
               stopDetectingActivities();
-            }
+            }*/
 
             stopRecording();
         }
@@ -346,6 +346,7 @@ public class BackgroundLocationUpdateService
         }
     }
 
+    /*
     private BroadcastReceiver detectedActivitiesReceiver = new BroadcastReceiver() {
       @Override
       public void onReceive(Context context, Intent intent) {
@@ -372,6 +373,7 @@ public class BackgroundLocationUpdateService
         //else do nothing
       }
     };
+    */
 
     //Helper function to get the screen scale for our big icon
     public float getImageFactor(Resources r) {
