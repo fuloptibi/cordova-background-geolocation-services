@@ -445,6 +445,7 @@ public class BackgroundLocationUpdateService
     }
     */
 
+    /*
     public void startDetectingActivities() {
       this.isRequestingActivity = true;
       attachDARecorder();
@@ -485,7 +486,7 @@ public class BackgroundLocationUpdateService
           detectedActivitiesAPI.connect();
       }
     }
-
+    */
 
     public void startRecording() {
         Log.w(TAG, "Started Recording Locations");
@@ -498,6 +499,7 @@ public class BackgroundLocationUpdateService
         detachRecorder();
     }
 
+    /*
     private GoogleApiClient.ConnectionCallbacks cb = new GoogleApiClient.ConnectionCallbacks() {
            @Override
            public void onConnected(Bundle bundle) {
@@ -513,15 +515,17 @@ public class BackgroundLocationUpdateService
                Log.w(TAG, "Connection To Activity Suspended");
                showDebugToast(getApplicationContext(), "Activity Client Suspended");
            }
-       };
+       };*/
 
+       /*
       private GoogleApiClient.OnConnectionFailedListener failedCb = new GoogleApiClient.OnConnectionFailedListener() {
            @Override
            public void onConnectionFailed(ConnectionResult cr) {
                Log.w(TAG, "ERROR CONNECTING TO DETECTED ACTIVITIES");
            }
-       };
+       };*/
 
+    /*
     protected synchronized void buildDAClient() {
       Log.i(TAG, "BUILDING DA CLIENT");
          detectedActivitiesAPI = new GoogleApiClient.Builder(this)
@@ -531,7 +535,7 @@ public class BackgroundLocationUpdateService
                  .build();
 
         detectedActivitiesAPI.connect();
-    }
+    }*/
 
     protected synchronized void connectToPlayAPI() {
         locationClientAPI =  new GoogleApiClient.Builder(this)
@@ -663,7 +667,7 @@ public class BackgroundLocationUpdateService
             unregisterReceiver(locationUpdateReceiver);
             unregisterReceiver(startRecordingReceiver);
             unregisterReceiver(stopRecordingReceiver);
-            unregisterReceiver(detectedActivitiesReceiver);
+            //unregisterReceiver(detectedActivitiesReceiver);
         } catch(IllegalArgumentException e) {
                Log.e(TAG, "Error: Could not unregister receiver", e);
         }
