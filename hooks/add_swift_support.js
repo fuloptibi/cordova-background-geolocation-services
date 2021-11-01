@@ -11,11 +11,14 @@ module.exports = function(context) {
     run();
 
     function run() {
-        var cordova_util = context.requireCordovaModule('cordova-lib/src/cordova/util'),
-            ConfigParser = CORDOVA_VERSION >= 6.0
+      console.log('!!!!!!!! D1');
+        var cordova_util = context.requireCordovaModule('cordova-lib/src/cordova/util');
+      console.log('!!!!!!!! D2', CORDOVA_VERSION);
+        var ConfigParser = CORDOVA_VERSION >= 6.0
               ? context.requireCordovaModule('cordova-common').ConfigParser
-              : context.requireCordovaModule('cordova-lib/src/configparser/ConfigParser'),
-            projectRoot = cordova_util.isCordova(),
+              : context.requireCordovaModule('cordova-lib/src/configparser/ConfigParser');
+        console.log('!!!!!!!! D3');
+        var projectRoot = cordova_util.isCordova(),
             platform_ios,
             xml = cordova_util.projectConfig(projectRoot),
             cfg = new ConfigParser(xml),
@@ -29,7 +32,7 @@ module.exports = function(context) {
             bridgingHeaderPath;
 
         if(CORDOVA_VERSION < 7.0) {
-            platform_ios = CORDOVA_VERSION < 5.0 
+            platform_ios = CORDOVA_VERSION < 5.0
               ? context.requireCordovaModule('cordova-lib/src/plugman/platforms')['ios']
               : context.requireCordovaModule('cordova-lib/src/plugman/platforms/ios')
 
