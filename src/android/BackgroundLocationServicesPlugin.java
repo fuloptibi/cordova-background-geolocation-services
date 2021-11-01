@@ -79,7 +79,7 @@ public class BackgroundLocationServicesPlugin extends CordovaPlugin {
 
     public static final int START_REQ_CODE = 0;
     public static final int PERMISSION_DENIED_ERROR = 20;
-    protected final static String[] permissions = { Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION };
+    protected final static String[] permissions = { Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACTIVITY_RECOGNITION };
 
     // Used to (un)bind the service to with the activity
     private final ServiceConnection serviceConnection = new ServiceConnection() {
