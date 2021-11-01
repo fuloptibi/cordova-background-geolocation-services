@@ -14,9 +14,7 @@ module.exports = function(context) {
       console.log('!!!!!!!! D1');
         var cordova_util = context.requireCordovaModule('cordova-lib/src/cordova/util');
       console.log('!!!!!!!! D2', CORDOVA_VERSION);
-        var ConfigParser = CORDOVA_VERSION >= 6.0
-              ? context.requireCordovaModule('cordova-common').ConfigParser
-              : context.requireCordovaModule('cordova-lib/src/configparser/ConfigParser');
+        var ConfigParser = context.requireCordovaModule('cordova-common').ConfigParser;
         console.log('!!!!!!!! D3');
         var projectRoot = cordova_util.isCordova(),
             platform_ios,
@@ -31,13 +29,13 @@ module.exports = function(context) {
             xcodeProject,
             bridgingHeaderPath;
 
-        if(CORDOVA_VERSION < 7.0) {
+        /*if(CORDOVA_VERSION < 7.0) {
             platform_ios = CORDOVA_VERSION < 5.0
               ? context.requireCordovaModule('cordova-lib/src/plugman/platforms')['ios']
               : context.requireCordovaModule('cordova-lib/src/plugman/platforms/ios')
 
             projectFile = platform_ios.parseProjectFile(iosPlatformPath);
-        } else {
+        } else {*/
             var project_files = context.requireCordovaModule('glob').sync(path.join(iosPlatformPath, '*.xcodeproj', 'project.pbxproj'));
             if (project_files.length === 0) {
                 throw new Error('Can\'t found xcode project file');
@@ -63,7 +61,7 @@ module.exports = function(context) {
                     fs.writeFileSync(frameworks_file, JSON.stringify(this.frameworks, null, 4));
                 }
             };
-        }
+        // }
         xcodeProject = projectFile.xcode;
 
         if (fs.existsSync(xcconfigPath)) {
