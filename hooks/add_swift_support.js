@@ -36,24 +36,24 @@ module.exports = function(context) {
 
             projectFile = platform_ios.parseProjectFile(iosPlatformPath);
         } else {*/
-            var project_files = context.requireCordovaModule('glob').sync(path.join(iosPlatformPath, '*.xcodeproj', 'project.pbxproj'));
+            var project_files = require('glob').sync(path.join(iosPlatformPath, '*.xcodeproj', 'project.pbxproj'));
             if (project_files.length === 0) {
                 throw new Error('Can\'t found xcode project file');
             }
 
             var pbxPath = project_files[0];
-            var xcodeproj = context.requireCordovaModule('xcode').project(pbxPath);
+            var xcodeproj = require('xcode').project(pbxPath);
             xcodeproj.parseSync();
 
             projectFile = {
                 'xcode': xcodeproj,
                 write: function () {
-                    var fs = context.requireCordovaModule('fs');
+                    var fs = require('fs');
 
                     var frameworks_file = path.join(iosPlatformPath, 'frameworks.json');
                     var frameworks = {};
                     try {
-                        frameworks = context.requireCordovaModule(frameworks_file);
+                        frameworks = require(frameworks_file);
                         console.log(JSON.stringify(frameworks));
                     } catch(e) {}
 
