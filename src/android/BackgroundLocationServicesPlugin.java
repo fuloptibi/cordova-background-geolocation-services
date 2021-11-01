@@ -37,7 +37,7 @@ public class BackgroundLocationServicesPlugin extends CordovaPlugin {
     public static final String ACTION_STOP = "stop";
     public static final String ACTION_CONFIGURE = "configure";
     public static final String ACTION_SET_CONFIG = "setConfig";
-    public static final String ACTION_AGGRESSIVE_TRACKING = "startAggressiveTracking";
+    //public static final String ACTION_AGGRESSIVE_TRACKING = "startAggressiveTracking";
     public static final String ACTION_GET_VERSION = "getVersion";
     public static final String ACTION_REGISTER_FOR_LOCATION_UPDATES = "registerForLocationUpdates";
     public static final String ACTION_REGISTER_FOR_ACTIVITY_UPDATES = "registerForActivityUpdates";
@@ -54,7 +54,7 @@ public class BackgroundLocationServicesPlugin extends CordovaPlugin {
 
     private String interval = "300000";
     private String fastestInterval = "60000";
-    private String aggressiveInterval = "4000";
+    //private String aggressiveInterval = "4000";
     private String activitiesInterval = "1000";
 
     private String distanceFilter = "30";
@@ -203,7 +203,7 @@ public class BackgroundLocationServicesPlugin extends CordovaPlugin {
               updateServiceIntent.putExtra("notificationText", notificationText);
               updateServiceIntent.putExtra("interval", interval);
               updateServiceIntent.putExtra("fastestInterval", fastestInterval);
-              updateServiceIntent.putExtra("aggressiveInterval", aggressiveInterval);
+              //updateServiceIntent.putExtra("aggressiveInterval", aggressiveInterval);
               updateServiceIntent.putExtra("activitiesInterval", activitiesInterval);
               updateServiceIntent.putExtra("useActivityDetection", useActivityDetection);
 
@@ -238,7 +238,7 @@ public class BackgroundLocationServicesPlugin extends CordovaPlugin {
                 this.desiredAccuracy = data.getString(1);
                 this.interval = data.getString(2);
                 this.fastestInterval = data.getString(3);
-                this.aggressiveInterval = data.getString(4);
+                //this.aggressiveInterval = data.getString(4);
                 this.isDebugging = data.getString(5);
                 this.notificationTitle = data.getString(6);
                 this.notificationText = data.getString(7);
@@ -266,7 +266,7 @@ public class BackgroundLocationServicesPlugin extends CordovaPlugin {
         } else if(ACTION_REGISTER_FOR_ACTIVITY_UPDATES.equalsIgnoreCase(action)) {
           result = true;
           detectedActivitiesCallback = callbackContext;
-        } else if(ACTION_AGGRESSIVE_TRACKING.equalsIgnoreCase(action)) {
+        } /* else if(ACTION_AGGRESSIVE_TRACKING.equalsIgnoreCase(action)) {
             result = true;
             if(isEnabled) {
                 this.cordova.getActivity().sendBroadcast(new Intent(Constants.CHANGE_AGGRESSIVE));
@@ -274,7 +274,7 @@ public class BackgroundLocationServicesPlugin extends CordovaPlugin {
             } else {
                 callbackContext.error("Tracking not enabled, need to start tracking before starting aggressive tracking");
             }
-        }
+        }*/
 
         return result;
     }

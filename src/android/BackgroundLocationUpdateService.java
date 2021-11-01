@@ -101,7 +101,7 @@ public class BackgroundLocationUpdateService
 
     private long  interval             = (long)  SECONDS_PER_MINUTE * MILLISECONDS_PER_SECOND * 5;
     private long  fastestInterval      = (long)  SECONDS_PER_MINUTE * MILLISECONDS_PER_SECOND;
-    private long  aggressiveInterval   = (long) MILLISECONDS_PER_SECOND * 4;
+    // private long  aggressiveInterval   = (long) MILLISECONDS_PER_SECOND * 4;
 
     private Boolean isDebugging;
     private String notificationTitle = "Background checking";
@@ -152,7 +152,7 @@ public class BackgroundLocationUpdateService
         // Receivers for start/stop recording
         registerReceiver(startRecordingReceiver, new IntentFilter(Constants.START_RECORDING));
         registerReceiver(stopRecordingReceiver, new IntentFilter(Constants.STOP_RECORDING));
-        registerReceiver(startAggressiveReceiver, new IntentFilter(Constants.CHANGE_AGGRESSIVE));
+        //registerReceiver(startAggressiveReceiver, new IntentFilter(Constants.CHANGE_AGGRESSIVE));
 
         // Location criteria
         criteria = new Criteria();
@@ -172,7 +172,7 @@ public class BackgroundLocationUpdateService
 
             interval             = Integer.parseInt(intent.getStringExtra("interval"));
             fastestInterval      = Integer.parseInt(intent.getStringExtra("fastestInterval"));
-            aggressiveInterval   = Integer.parseInt(intent.getStringExtra("aggressiveInterval"));
+            //aggressiveInterval   = Integer.parseInt(intent.getStringExtra("aggressiveInterval"));
             activitiesInterval   = Integer.parseInt(intent.getStringExtra("activitiesInterval"));
 
             isDebugging = Boolean.parseBoolean(intent.getStringExtra("isDebugging"));
@@ -267,12 +267,12 @@ public class BackgroundLocationUpdateService
     }
 
     //Receivers for setting the plugin to a certain state
-    private BroadcastReceiver startAggressiveReceiver = new BroadcastReceiver() {
+    /*private BroadcastReceiver startAggressiveReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             setStartAggressiveTrackingOn();
         }
-    };
+    };*/
 
     private BroadcastReceiver startRecordingReceiver = new BroadcastReceiver() {
         @Override
@@ -426,6 +426,7 @@ public class BackgroundLocationUpdateService
         this.enabled = false;
     }
 
+    /*
     private void setStartAggressiveTrackingOn() {
         if(!fastestSpeed && this.isRecording) {
             detachRecorder();
@@ -440,6 +441,7 @@ public class BackgroundLocationUpdateService
             fastestSpeed = true;
         }
     }
+    */
 
     public void startDetectingActivities() {
       this.isRequestingActivity = true;
